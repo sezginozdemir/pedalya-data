@@ -1,0 +1,26 @@
+{
+  "name": "pedalya",
+  "version": "0.1.0",
+  "description": "Bisikletliler icin harita uygulamasi",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.mjs",
+    "data:import": "node scripts/import-osm.mjs",
+    "tunnel": "data\\\\tools\\\\cloudflared.exe tunnel --no-autoupdate --url http://127.0.0.1:5173",
+    "reports": "node scripts/reports.mjs",
+    "test": "node --test",
+    "backup": "node --env-file-if-exists=.env scripts/backup.mjs",
+    "data:update": "node --env-file-if-exists=.env scripts/import-osm.mjs --configured",
+    "data:packs": "node --env-file-if-exists=.env scripts/build-packs.mjs",
+    "data:bundle": "node scripts/bundle-packs.mjs"
+  },
+  "type": "module",
+  "dependencies": {
+    "@mapbox/vector-tile": "^3.0.0",
+    "maplibre-gl": "^6.16.0",
+    "pbf": "^5.1.2"
+  },
+  "private": "true",
+  "engines": {
+    "node": ">=24"
+  }
+}

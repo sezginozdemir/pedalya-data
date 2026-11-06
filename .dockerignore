@@ -1,0 +1,7 @@
+node_modules
+mobile
+data
+test
+.claude
+.env
+*.md

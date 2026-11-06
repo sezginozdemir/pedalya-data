@@ -1,0 +1,49 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 5173
+      TRUST_PROXY: forwarded
+    volumes:
+      - pedalya-data:/app/data
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      API_DOMAIN: ${API_DOMAIN}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+
+  # Zamanlanmis isler; surekli calismaz. Komutlar icin DEPLOY.md
+  importer:
+    build: .
+    profiles: [jobs]
+    env_file: .env
+    command: node scripts/import-osm.mjs --configured
+    volumes:
+      - pedalya-data:/app/data
+
+  backup:
+    build: .
+    profiles: [jobs]
+    env_file: .env
+    command: node scripts/backup.mjs
+    volumes:
+      - pedalya-data:/app/data
+
+volumes:
+  pedalya-data:
+  caddy-data:
+  caddy-config:

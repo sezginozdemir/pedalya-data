@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pedalya</title>
+  <link rel="stylesheet" href="vendor/maplibre-gl.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <aside class="panel">
+      <header class="brand">
+        <h1>Pedalya</h1>
+        <button id="openSettings" class="place-chip" type="button" title="Konum ve ayarlar">
+          <span id="placeName">Konum seç</span>
+          <span class="chip-action">Değiştir</span>
+        </button>
+      </header>
+
+      <nav class="tabs" role="tablist">
+        <button id="tabNearby" role="tab" aria-selected="true" type="button">Yakınımda</button>
+        <button id="tabRoute" role="tab" aria-selected="false" type="button">Rota</button>
+      </nav>
+
+      <section id="viewNearby" class="view">
+        <div id="filters" class="filters"></div>
+        <p id="status" class="status" role="status"></p>
+        <ul id="list" class="list"></ul>
+      </section>
+
+      <section id="viewRoute" class="view" hidden>
+        <div class="stops">
+          <div class="stop">
+            <span class="stop-dot from"></span>
+            <div class="stop-body"><small>Başlangıç</small><strong id="fromLabel">—</strong></div>
+            <button id="pickFrom" class="link" type="button">Haritadan seç</button>
+          </div>
+          <div class="stop">
+            <span class="stop-dot to"></span>
+            <div class="stop-body"><small>Varış</small><strong id="toLabel">Haritaya dokun veya listeden seç</strong></div>
+            <button id="swap" class="link" type="button">Ters çevir</button>
+          </div>
+        </div>
+        <label class="field">Rota tipi
+          <select id="profile">
+            <option value="trekking">Dengeli (şehir ve tur)</option>
+            <option value="safety">En güvenli (sakin yollar)</option>
+            <option value="fastbike">Hızlı (yol bisikleti)</option>
+          </select>
+        </label>
+        <div id="routeSummary" class="summary" hidden>
+          <div><strong id="sumDist"></strong><small>mesafe</small></div>
+          <div><strong id="sumTime"></strong><small>tahmini süre</small></div>
+          <div><strong id="sumAsc"></strong><small>tırmanış</small></div>
+        </div>
+        <p id="routeStatus" class="status" role="status"></p>
+        <div class="route-actions">
+          <button id="gpx" class="btn" type="button" disabled>GPX indir</button>
+          <button id="clearRoute" class="btn ghost" type="button">Temizle</button>
+        </div>
+      </section>
+    </aside>
+    <div id="map" class="map"></div>
+  </main>
+
+  <dialog id="settings" class="settings">
+    <form id="settingsForm" method="dialog">
+      <h2>Nerede sürüyorsun?</h2>
+      <p class="hint">Çevrendeki bisikletçileri, parkları ve rotaları buna göre gösteririz.</p>
+      <label class="field">Ülke
+        <select id="country"></select>
+      </label>
+      <label class="field">Şehir veya semt
+        <span class="search-row">
+          <input id="placeQuery" type="search" placeholder="Örn. Kadıköy" autocomplete="off">
+          <button id="placeSearch" class="btn" type="button">Ara</button>
+        </span>
+      </label>
+      <button id="useGps" class="link" type="button">Konumumu kullan</button>
+      <ul id="placeResults" class="results"></ul>
+      <p id="settingsStatus" class="status" role="status"></p>
+      <label class="field">Arama yarıçapı
+        <select id="radius">
+          <option value="3">3 km</option>
+          <option value="5">5 km</option>
+          <option value="10">10 km</option>
+          <option value="15">15 km</option>
+        </select>
+      </label>
+      <div class="dialog-actions">
+        <button id="settingsClose" class="btn ghost" type="button">Kapat</button>
+        <button id="settingsSave" class="btn" type="button">Kaydet</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
