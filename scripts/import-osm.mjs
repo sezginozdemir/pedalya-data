@@ -35,13 +35,16 @@ async function loadCatalog() {
   return (await res.json()).features.map((f) => f.properties);
 }
 
+// Geofabrik katalogdan ISO ulke kodlarini kaldirdi: ulke -> bolge eslemesi config/regions.json'da tutulur.
+// arg: bolge kimligi (germany) veya tek ulkelik bolgenin ISO kodu (de)
+const configured = JSON.parse(await readFile(path.join(ROOT, 'config', 'regions.json'), 'utf8'));
+
 function resolveRegion(catalog, arg) {
   const code = arg.toUpperCase();
-  const byCode = catalog.filter((r) => r['iso3166-1:alpha2']?.includes(code));
-  const matches = byCode.length ? byCode : catalog.filter((r) => r.id === arg);
-  if (matches.length === 1) return matches[0];
-  if (matches.length > 1) throw new Error(`${arg} birden cok bolgede: ${matches.map((r) => r.id).join(', ')}`);
-  throw new Error(`Katalogda yok: ${arg}`);
+  const entry = configured.find((r) => r.id === arg || (r.countries.length === 1 && r.countries[0] === code));
+  const region = catalog.find((r) => r.id === (entry?.id ?? arg));
+  if (!region) throw new Error(`Katalogda yok: ${arg}`);
+  return { ...region, countries: entry?.countries ?? [] };
 }
 
 async function remoteDate(url) {
@@ -349,7 +352,7 @@ async function importRegion(store, region, { force, keepRaw }) {
   if (!items.length) throw new Error('Hic nokta cikmadi; mevcut veri korunuyor');
 
   const saved = store.replaceRegion({
-    id: region.id, name: region.name, countries: region['iso3166-1:alpha2'] ?? [], dataDate: date.toISOString(),
+    id: region.id, name: region.name, countries: region.countries, dataDate: date.toISOString(),
   }, items, paths);
   if (!keepRaw) await unlink(file);
 
@@ -362,7 +365,7 @@ async function importRegion(store, region, { force, keepRaw }) {
 const args = process.argv.slice(2);
 const [shard, shards] = (args.find((a) => a.startsWith('--shard='))?.slice(8).split('/') ?? [0, 1]).map(Number);
 const targets = args.includes('--configured')
-  ? JSON.parse(await readFile(path.join(ROOT, 'config', 'regions.json'), 'utf8')).filter((_, i) => i % shards === shard)
+  ? configured.map((r) => r.id).filter((_, i) => i % shards === shard)
   : args.filter((a) => !a.startsWith('--'));
 const options = { force: args.includes('--force'), keepRaw: args.includes('--keep-raw') };
 if (!targets.length) {

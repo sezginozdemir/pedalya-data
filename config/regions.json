@@ -1,1 +1,361 @@
-["it","tr","nl","gr","bg","cy","ge","az","lu","hr","rs","si","hu","ro","sk","ie","pt","dk","ch","be","fi","at","cz","se","no","es","pl","gb","de","fr","il","eg","kz","ma","my","pe","ae","kr","tw","th","vn","co","cl","by","nz","za","ar","ph","mx","ua","au","cn","in","id","br","jp","ru","ca","us"]
+[
+  {
+    "id": "italy",
+    "countries": [
+      "IT"
+    ]
+  },
+  {
+    "id": "turkey",
+    "countries": [
+      "TR"
+    ]
+  },
+  {
+    "id": "netherlands",
+    "countries": [
+      "NL"
+    ]
+  },
+  {
+    "id": "greece",
+    "countries": [
+      "GR"
+    ]
+  },
+  {
+    "id": "bulgaria",
+    "countries": [
+      "BG"
+    ]
+  },
+  {
+    "id": "cyprus",
+    "countries": [
+      "CY"
+    ]
+  },
+  {
+    "id": "georgia",
+    "countries": [
+      "GE"
+    ]
+  },
+  {
+    "id": "azerbaijan",
+    "countries": [
+      "AZ"
+    ]
+  },
+  {
+    "id": "luxembourg",
+    "countries": [
+      "LU"
+    ]
+  },
+  {
+    "id": "croatia",
+    "countries": [
+      "HR"
+    ]
+  },
+  {
+    "id": "serbia",
+    "countries": [
+      "RS"
+    ]
+  },
+  {
+    "id": "slovenia",
+    "countries": [
+      "SI"
+    ]
+  },
+  {
+    "id": "hungary",
+    "countries": [
+      "HU"
+    ]
+  },
+  {
+    "id": "romania",
+    "countries": [
+      "RO"
+    ]
+  },
+  {
+    "id": "slovakia",
+    "countries": [
+      "SK"
+    ]
+  },
+  {
+    "id": "ireland-and-northern-ireland",
+    "countries": [
+      "IE"
+    ]
+  },
+  {
+    "id": "portugal",
+    "countries": [
+      "PT"
+    ]
+  },
+  {
+    "id": "denmark",
+    "countries": [
+      "DK"
+    ]
+  },
+  {
+    "id": "switzerland",
+    "countries": [
+      "CH"
+    ]
+  },
+  {
+    "id": "belgium",
+    "countries": [
+      "BE"
+    ]
+  },
+  {
+    "id": "finland",
+    "countries": [
+      "FI"
+    ]
+  },
+  {
+    "id": "austria",
+    "countries": [
+      "AT"
+    ]
+  },
+  {
+    "id": "czech-republic",
+    "countries": [
+      "CZ"
+    ]
+  },
+  {
+    "id": "sweden",
+    "countries": [
+      "SE"
+    ]
+  },
+  {
+    "id": "norway",
+    "countries": [
+      "NO"
+    ]
+  },
+  {
+    "id": "spain",
+    "countries": [
+      "ES"
+    ]
+  },
+  {
+    "id": "poland",
+    "countries": [
+      "PL"
+    ]
+  },
+  {
+    "id": "united-kingdom",
+    "countries": [
+      "GB"
+    ]
+  },
+  {
+    "id": "germany",
+    "countries": [
+      "DE"
+    ]
+  },
+  {
+    "id": "france",
+    "countries": [
+      "FR"
+    ]
+  },
+  {
+    "id": "israel-and-palestine",
+    "countries": [
+      "PS",
+      "IL"
+    ]
+  },
+  {
+    "id": "egypt",
+    "countries": [
+      "EG"
+    ]
+  },
+  {
+    "id": "kazakhstan",
+    "countries": [
+      "KZ"
+    ]
+  },
+  {
+    "id": "morocco",
+    "countries": [
+      "MA"
+    ]
+  },
+  {
+    "id": "malaysia-singapore-brunei",
+    "countries": [
+      "MY"
+    ]
+  },
+  {
+    "id": "peru",
+    "countries": [
+      "PE"
+    ]
+  },
+  {
+    "id": "gcc-states",
+    "countries": [
+      "QA",
+      "AE",
+      "OM",
+      "BH",
+      "KW"
+    ]
+  },
+  {
+    "id": "south-korea",
+    "countries": [
+      "KR"
+    ]
+  },
+  {
+    "id": "taiwan",
+    "countries": [
+      "TW"
+    ]
+  },
+  {
+    "id": "thailand",
+    "countries": [
+      "TH"
+    ]
+  },
+  {
+    "id": "vietnam",
+    "countries": [
+      "VN"
+    ]
+  },
+  {
+    "id": "colombia",
+    "countries": [
+      "CO"
+    ]
+  },
+  {
+    "id": "chile",
+    "countries": [
+      "CL"
+    ]
+  },
+  {
+    "id": "belarus",
+    "countries": [
+      "BY"
+    ]
+  },
+  {
+    "id": "new-zealand",
+    "countries": [
+      "NZ"
+    ]
+  },
+  {
+    "id": "south-africa",
+    "countries": [
+      "ZA"
+    ]
+  },
+  {
+    "id": "argentina",
+    "countries": [
+      "AR"
+    ]
+  },
+  {
+    "id": "philippines",
+    "countries": [
+      "PH"
+    ]
+  },
+  {
+    "id": "mexico",
+    "countries": [
+      "MX"
+    ]
+  },
+  {
+    "id": "ukraine",
+    "countries": [
+      "UA"
+    ]
+  },
+  {
+    "id": "australia",
+    "countries": [
+      "AU"
+    ]
+  },
+  {
+    "id": "china",
+    "countries": [
+      "CN"
+    ]
+  },
+  {
+    "id": "india",
+    "countries": [
+      "IN"
+    ]
+  },
+  {
+    "id": "indonesia",
+    "countries": [
+      "ID"
+    ]
+  },
+  {
+    "id": "brazil",
+    "countries": [
+      "BR"
+    ]
+  },
+  {
+    "id": "japan",
+    "countries": [
+      "JP"
+    ]
+  },
+  {
+    "id": "russia",
+    "countries": [
+      "RU"
+    ]
+  },
+  {
+    "id": "canada",
+    "countries": [
+      "CA"
+    ]
+  },
+  {
+    "id": "us",
+    "countries": [
+      "US"
+    ]
+  }
+]
