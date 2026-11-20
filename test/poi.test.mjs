@@ -34,3 +34,16 @@ test('etiketler uygulama noktasina donusur', () => {
 test('konumsuz kayit atilir', () => {
   assert.equal(normalize({ type: 'way', id: 1, tags: { shop: 'bicycle' } }), null);
 });
+
+test('bisiklet park yerlerinden yalnizca anlamli olanlar alinir', () => {
+  const rack = { amenity: 'bicycle_parking' };
+  assert.ok(!isPoi(rack, 'node')); // Tek tek bisiklet standlari alinmaz
+  assert.ok(!isPoi({ ...rack, capacity: '6' }, 'node'));
+  assert.ok(isPoi({ ...rack, capacity: '40' }, 'node'));
+  assert.ok(isPoi({ ...rack, name: 'Stazione Centrale' }, 'node'));
+  assert.ok(isPoi({ ...rack, bicycle_parking: 'building' }, 'way'));
+  assert.ok(isPoi({ ...rack, bicycle_parking: 'lockers' }, 'node'));
+  assert.ok(!isPoi({ ...rack, capacity: '80', access: 'private' }, 'node'));
+  assert.ok(!isPoi({ ...rack, capacity: '80', access: 'customers' }, 'node'));
+  assert.equal(normalize({ type: 'node', id: 1, lat: 1, lon: 2, tags: { ...rack, capacity: '40' } }).cat, 'parking');
+});

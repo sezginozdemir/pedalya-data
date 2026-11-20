@@ -8,10 +8,19 @@ function isDefunct(t) {
     t.demolished === 'yes' || /^(off|closed)$/i.test(t.opening_hours ?? '');
 }
 
-// POI_QUERY ile ayni kural
+// Dunyada yaklasik 1 milyon bisiklet park yeri var; hepsi paketleri sisirir. Sadece anlamli olanlar alinir:
+// adi olan, 20+ kapasiteli veya kapali/kilitli tipte olanlar. Yalnizca PBF aktariminda secilir (POI_QUERY'de yok).
+function isNotableParking(t) {
+  if (t.amenity !== 'bicycle_parking') return false;
+  if (['private', 'no', 'customers', 'permit'].includes(t.access)) return false;
+  return !!t.name || parseInt(t.capacity, 10) >= 20 || ['building', 'lockers', 'shed'].includes(t.bicycle_parking);
+}
+
+// POI_QUERY ile ayni kural (park yerleri haric)
 export function isPoi(t, type) {
   if (isDefunct(t)) return false;
-  return t.shop === 'bicycle' ||
+  return isNotableParking(t) ||
+    t.shop === 'bicycle' ||
     t['service:bicycle:repair'] === 'yes' ||
     t.amenity === 'bicycle_repair_station' ||
     t.amenity === 'bicycle_rental' ||
@@ -20,6 +29,7 @@ export function isPoi(t, type) {
 }
 
 function categorize(t) {
+  if (t.amenity === 'bicycle_parking') return 'parking';
   if (t.amenity === 'bicycle_repair_station') return 'repair';
   if (t.amenity === 'bicycle_rental') return 'rental';
   if (t.amenity === 'drinking_water') return 'water';
