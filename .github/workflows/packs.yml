@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 4 1 * *'
   workflow_dispatch:
+    inputs:
+      only:
+        description: 'Sadece bu ulkeler (bosluklu, ornek: "de us"). Bos birakilirsa hepsi yenilenir.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -15,6 +20,7 @@ concurrency:
 jobs:
   # Tek is 6 saati gecemez: ulkeler parcalara bolunur. Geofabrik'e yuk bindirmemek icin ikiser ikiser calisir.
   shard:
+    if: ${{ inputs.only == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 350
     strategy:
@@ -38,8 +44,34 @@ jobs:
           path: data/packs
           retention-days: 3
 
+  # Elle secilen ulkeler (ornegin ABD gibi buyuk dosyalar): tek is, once disk bosaltilir
+  targeted:
+    if: ${{ inputs.only != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    env:
+      ONLY: ${{ inputs.only }}
+    steps:
+      - name: Disk alani ac
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 26
+          cache: npm
+      - run: npm ci --omit=dev
+      - run: node --max-old-space-size=13000 scripts/import-osm.mjs $ONLY --force
+      - run: node scripts/build-packs.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: packs-targeted
+          path: data/packs
+          retention-days: 3
+
   publish:
-    needs: shard
+    needs: [shard, targeted]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     env:

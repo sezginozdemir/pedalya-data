@@ -50,10 +50,12 @@ async function remoteDate(url) {
   return new Date(head.headers.get('last-modified'));
 }
 
-// Saglama dosyasi alinamadi diye gigabaytlarca inmis dosya silinmez: birkac kez yeniden denenir
+// Saglama dosyasi alinamadi diye gigabaytlarca inmis dosya silinmez: baglanti hatasinda yeniden denenir.
+// Geofabrik bazi buyuk dosyalar icin .md5 yayinlamaz (404); o zaman null doner ve boyut kontrolu yapilir.
 async function remoteMd5(url, attempts = 5) {
   for (let attempt = 1; ; attempt++) {
     const res = await fetch(url + '.md5').catch(() => null);
+    if (res?.status === 404) return null;
     const value = res?.ok ? (await res.text()).split(/\s+/)[0] : '';
     if (/^[0-9a-f]{32}$/.test(value)) return value;
     if (attempt === attempts) throw new Error(`MD5 dosyasi alinamadi (HTTP ${res?.status ?? 'baglanti hatasi'})`);
@@ -76,13 +78,22 @@ async function download(url, date) {
   await pipeline(Readable.fromWeb(res.body), createWriteStream(partial));
 
   const expected = await remoteMd5(url);
-  const actual = await md5(partial);
-  if (expected !== actual) {
-    await unlink(partial);
-    throw new Error(`MD5 uyusmuyor: ${actual} != ${expected}`);
+  if (expected) {
+    const actual = await md5(partial);
+    if (expected !== actual) {
+      await unlink(partial);
+      throw new Error(`MD5 uyusmuyor: ${actual} != ${expected}`);
+    }
+  } else {
+    const length = Number(res.headers.get('content-length'));
+    if (!length || (await stat(partial)).size !== length) {
+      await unlink(partial);
+      throw new Error('MD5 yok ve indirilen boyut beklenenle ayni degil');
+    }
+    log('MD5 yayinlanmamis, dosya boyutu dogrulandi');
   }
   await rename(partial, file);
-  log('Indirme tamam, MD5 dogrulandi');
+  log('Indirme tamam');
   return file;
 }
 
